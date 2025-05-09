@@ -20,7 +20,7 @@ public class Vehicle {
         this.model = model;
         this.vehicleType = vehicleType;
         this.color = color;
-        odometer = odometer;
+        this.odometer = odometer;
         this.price = price;
 
     }
@@ -78,7 +78,7 @@ public class Vehicle {
     }
 
     public void setOdometer(int odometer) {
-        odometer = odometer;
+        this.odometer = odometer;
     }
 
     public double getPrice() {

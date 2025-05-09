@@ -12,13 +12,13 @@ public class Dealership {
     static Scanner input = new Scanner(System.in);
     static ArrayList<Vehicle> inventory = new ArrayList<>();
     public static ArrayList <Vehicle> loadVehicles(){
-        //USE ARRAY LIST TO READ FROM TRANSACTIONS.CSV
+        //USE ARRAY LIST TO READ FROM INVENTORY.CSV
         try {
             FileReader fileReader = new FileReader("src/main/resources/inventory.csv");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             ArrayList<Vehicle> dealership = new ArrayList<>();
             String input;
-            //ignores first line from transactions.csv
+            //ignores first line from inventory.csv
             while ((input = bufferedReader.readLine()) != null) {
                 if (input.startsWith("D")) {
                     continue;
@@ -75,7 +75,7 @@ public class Dealership {
         this.phone = phone;
     }
 
-    //TODO METHOD SETUP, BUILD LATER
+    //TODO METHOD SETUP, BUILD LATER MAY
 
 
     public static void getVehiclesByPrice(){
@@ -142,8 +142,7 @@ public class Dealership {
             }
         System.out.println("-- Showing All Current Vehicles in Inventory --");;
         System.out.println("vin | year | make | model | vehicleType | color | odometer | price");
-        //SORTS TRANSACTIONS BY NEWEST TO OLDEST. HOLDS SORT WITHIN TIMESORTTRANSACTION
-        //
+
         for (Vehicle dealership : inventory) {
             System.out.println();
         }
