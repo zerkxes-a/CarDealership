@@ -12,14 +12,14 @@ public class DealershipFileManager {
        try {
            FileReader fileReader = new FileReader("src/main/resources/inventory.csv");
            BufferedReader bufferedReader = new BufferedReader(fileReader);
-           ArrayList<Dealership> dealerships = new ArrayList<>();
+           ArrayList<Dealership> dealership = new ArrayList<>();
            String firstLine = bufferedReader.readLine();
            if (firstLine != null) {
                String[] values = firstLine.split("\\|");
                name = values[0];
                String address = values[1];
                String phone = values[2];
-               dealerships.add(new Dealership(name, address, phone));
+               dealership.add(new Dealership(name, address, phone));
            }
 
        } catch (IOException e) {

@@ -96,8 +96,8 @@ public class Dealership {
     public static void getVehiclesByType(){
 
     }
-    public static void getAllVehicles(){
-
+    public static void getAllVehicles() throws IOException {
+        displayAllEntries();
     }
     //WRITES VEHICLE INFO INTO CSV FILE
     public static void addVehicle() {
@@ -132,7 +132,12 @@ public class Dealership {
 
     }
     public static void displayAllEntries() throws IOException {
-        FileReader fileReader = new FileReader("src/main/resources/inventory.csv");
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader("src/main/resources/inventory.csv");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         String input;
         //ignores first line from transactions.csv
