@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -97,19 +98,43 @@ public class UserInterface {
         dealership.getVehiclesByPrice(minPrice,maxPrice).forEach(System.out::println);
     }
     private void processGetByMakeModelRequest(){
-
+        System.out.print("Please enter the vehicle Manufacturer:  ");
+        String make = input.nextLine();
+        input.nextLine();
+        System.out.print("Please enter the vehicle Model:  ");
+        String model = input.nextLine();
+        input.nextLine();
+        dealership.getVehiclesByMake(make, model).forEach(System.out::println);
     }
     private void processGetByYearRequest(){
-
+        System.out.print("Please enter the Min Year:  ");
+        int minYear = input.nextInt();
+        input.nextLine();
+        System.out.print("Please enter the Max Year:  ");
+        int maxYear = input.nextInt();
+        input.nextLine();
+        dealership.getVehiclesByYear(minYear,maxYear).forEach(System.out::println);
     }
     private void processGetByColorRequest(){
-
+        System.out.print("Car Color: ");
+        String colorChoice = input.nextLine();
+        input.nextLine();
+        dealership.getVehiclesByColor(colorChoice).forEach(System.out::println);
     }
     private void processGetByMileageRequest(){
-
+        System.out.print("Please enter the Min Odomoter Reading:  ");
+        int minOdometer = input.nextInt();
+        input.nextLine();
+        System.out.print("Please enter the Max Odometer Reading:  ");
+        int maxOdometer = input.nextInt();
+        input.nextLine();
+        dealership.getVehiclesByMileage(minOdometer,maxOdometer).forEach(System.out::println);
     }
     private void processGetByVehicleTypeRequest(){
-
+        System.out.print("Please enter a Vehicle Type: ");
+        String typeChoice = input.nextLine();
+        input.nextLine();
+        dealership.getVehiclesByType(typeChoice).forEach(System.out::println);
     }
     private void processGetAllVehiclesRequest()  {
         dealership.getAllVehicles().forEach(System.out::println);
@@ -130,7 +155,7 @@ public class UserInterface {
         String vehicleType = input.nextLine();
         System.out.print("Color: ");
         String color = input.nextLine();
-        System.out.print("Odomoter Reading: ");
+        System.out.print("Odometer Reading: ");
         int odometerReading = input.nextInt();
         System.out.print("Price: ");
         double price = input.nextDouble();

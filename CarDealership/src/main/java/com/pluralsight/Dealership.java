@@ -1,16 +1,13 @@
 package com.pluralsight;
 
-import java.io.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Scanner;
+
 import java.util.stream.Collectors;
 
 public class Dealership {
     private String name;
     private String address;
     private String phone;
-    static Scanner input = new Scanner(System.in);
     ArrayList<Vehicle> inventory = new ArrayList<>();
 
     public Dealership(String name, String address, String phone) {
@@ -43,7 +40,6 @@ public class Dealership {
         this.phone = phone;
     }
 
-    //TODO METHOD SETUP, BUILD LATER MAY
 
 
     public ArrayList<Vehicle> getVehiclesByPrice(double min, double max){
