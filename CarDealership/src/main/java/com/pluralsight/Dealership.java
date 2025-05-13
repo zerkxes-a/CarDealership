@@ -4,46 +4,14 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Dealership {
     private String name;
     private String address;
     private String phone;
     static Scanner input = new Scanner(System.in);
-    static ArrayList<Vehicle> inventory = new ArrayList<>();
-    public static ArrayList <Vehicle> loadVehicles(){
-        //USE ARRAY LIST TO READ FROM INVENTORY.CSV
-        try {
-            FileReader fileReader = new FileReader("src/main/resources/inventory.csv");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            ArrayList<Vehicle> dealership = new ArrayList<>();
-            String input;
-            //ignores first line from inventory.csv
-            while ((input = bufferedReader.readLine()) != null) {
-                if (input.startsWith("D")) {
-                    continue;
-                }
-
-                //READS FROM INVENTORY.CSV TO SORT IN DIFFERENT WAYS
-                String[] items = input.split(" \\| ");
-                int vin = Integer.parseInt(items[0]);
-                int year = Integer.parseInt(items[1]);
-                String make = items[2];
-                String model = items[3];
-                String vehicleType = items[4];
-                String color = items[5];
-                int odometer = Integer.parseInt(items[6]);
-                double price = Double.parseDouble(items[7]);
-
-                inventory.add(new Vehicle(vin, year, make, model, vehicleType, color,odometer,price));
-                 }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
+    ArrayList<Vehicle> inventory = new ArrayList<>();
 
     public Dealership(String name, String address, String phone) {
         this.name = name;
@@ -78,79 +46,43 @@ public class Dealership {
     //TODO METHOD SETUP, BUILD LATER MAY
 
 
-    public static void getVehiclesByPrice(){
-
+    public ArrayList<Vehicle> getVehiclesByPrice(double min, double max){
+       return inventory.stream().filter(vehicle -> vehicle.getPrice() <= max && vehicle.getPrice() >= min).collect(Collectors.toCollection(ArrayList::new));
     }
-    public static void getVehiclesByMake(){
-
+    public ArrayList<Vehicle> getVehiclesByMake(String make, String model){
+        return inventory.stream().filter(vehicle -> make.equalsIgnoreCase(vehicle.getMake()) && model.equalsIgnoreCase(vehicle.getModel())).collect(Collectors.toCollection(ArrayList::new));
     }
-    public static void getVehiclesByYear(){
-
+    public ArrayList<Vehicle> getVehiclesByYear(int min, int max){
+        return inventory.stream().filter(vehicle -> vehicle.getYear() <= max && vehicle.getYear() >= min).collect(Collectors.toCollection(ArrayList::new));
     }
-    public static void getVehiclesByColor(){
-
+    public ArrayList<Vehicle> getVehiclesByColor(String color){
+        return inventory.stream().filter(vehicle -> color.equalsIgnoreCase(vehicle.getColor())).collect(Collectors.toCollection(ArrayList::new));
     }
-    public static void getVehiclesByMileage(){
-
+    public ArrayList<Vehicle> getVehiclesByMileage(int min, int max){
+        return inventory.stream().filter(vehicle -> vehicle.getOdometer() <= max && vehicle.getOdometer() >= min).collect(Collectors.toCollection(ArrayList::new));
     }
-    public static void getVehiclesByType(){
-
+    public ArrayList<Vehicle> getVehiclesByType(String vehicleType){
+        return inventory.stream().filter(vehicle -> vehicleType.equalsIgnoreCase(vehicle.getVehicleType())).collect(Collectors.toCollection(ArrayList::new));
     }
-    public static void getAllVehicles() throws IOException {
-        displayAllEntries();
+    public ArrayList<Vehicle> getAllVehicles() {
+        return inventory;
     }
     //WRITES VEHICLE INFO INTO CSV FILE
-    public static void addVehicle() {
-        System.out.println("Please enter new vehicle information: ");
-        System.out.print("What is the cars VIN number: ");
-        int vin = input.nextInt();
-        System.out.print("What is the Year of the Car: ");
-        int year = input.nextInt();
-        System.out.print("What brand/make is the car: ");
-        String make = input.nextLine();
-        System.out.print("What is the Model type of the car: ");
-        String model = input.nextLine();
-        System.out.print("What class of car is it(SUV, Car, Truck, Hatchback): ");
-        String vehicleType = input.nextLine();
-        System.out.print("What is the Color: ");
-        String color = input.nextLine();
-        System.out.print("What is the Odometer Reading: ");
-        int odometer = input.nextInt();
-        System.out.print("What is the Price");
-        double price = input.nextDouble();
-
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/resources/inventory.csv", true))) {
-            //takes in new supplied Vehicle info  and writes to inventory.csc as strings
-
-            bufferedWriter.write(new Vehicle(vin, year, make, model, vehicleType, color, odometer, price).toString());
-            // CLOSES OUT WRITER AUTOMATICALLY HERE
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public static void removeVehicle(){
+    public void addVehicle(Vehicle vehicle) {
+        inventory.add(vehicle);
+        DealershipFileManager.saveDealership(this);
 
     }
-    public static void displayAllEntries() throws IOException {
-        FileReader fileReader = null;
-        try {
-            fileReader = new FileReader("src/main/resources/inventory.csv");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        String input;
-        //ignores first line from transactions.csv
-        while ((input = bufferedReader.readLine()) != null) {
-            if (input.startsWith("D")) {
-                continue;
-            }
-        System.out.println("-- Showing All Current Vehicles in Inventory --");;
-        System.out.println("vin | year | make | model | vehicleType | color | odometer | price");
+    public void removeVehicle(Vehicle vehicle){
+        inventory.remove(vehicle);
+        DealershipFileManager.saveDealership(this);
+    }
 
-        for (Vehicle dealership : inventory) {
-            System.out.println();
-        }
-        }
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(String.format("%s|%s|%s", name, address, phone));
+        inventory.forEach(vehicle -> stringBuilder.append("\n").append(vehicle));
+        return stringBuilder.toString();
     }
 }

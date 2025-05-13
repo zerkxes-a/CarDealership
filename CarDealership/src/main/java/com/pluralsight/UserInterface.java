@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -8,11 +9,7 @@ public class UserInterface {
     //         DATA TYPE           VARIABLE                    VALUE
     private Dealership dealership;
 
-    public static void main(String[] args) {
-        display();
-    }
-
-    public static void display() {
+    public void display(){
         init();
 
         System.out.println("Welcome to Dealership Management App: ");
@@ -36,17 +33,21 @@ public class UserInterface {
                     processRemoveVehicleRequest();
                     break;
                 case "3":
-                    displayVehicles();
+                    try {
+                        displayVehicles();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
             }
         }
 
     }
 
-    private static void init() {
-        DealershipFileManager.getDealership();
+    private  void init() {
+        dealership = DealershipFileManager.getDealership();
     }
 
-    private static void displayVehicles(){
+    private  void displayVehicles() throws IOException {
         System.out.println("Please choose how you would like to display Vehicle info:\n ");
 
         System.out.println("1) Sort by Price ");
@@ -86,31 +87,57 @@ public class UserInterface {
     }
 
 
-    private static void processGetByPriceRequest(){
+    private void processGetByPriceRequest(){
+        System.out.print("Please enter the Max Price:  ");
+        double maxPrice = input.nextDouble();
+        input.nextLine();
+        System.out.print("Please enter the Min Price:  ");
+        double minPrice = input.nextDouble();
+        input.nextLine();
+        dealership.getVehiclesByPrice(minPrice,maxPrice).forEach(System.out::println);
+    }
+    private void processGetByMakeModelRequest(){
 
     }
-    private static void processGetByMakeModelRequest(){
+    private void processGetByYearRequest(){
 
     }
-    private static void processGetByYearRequest(){
+    private void processGetByColorRequest(){
 
     }
-    private static void processGetByColorRequest(){
+    private void processGetByMileageRequest(){
 
     }
-    private static void processGetByMileageRequest(){
+    private void processGetByVehicleTypeRequest(){
 
     }
-    private static void processGetByVehicleTypeRequest(){
+    private void processGetAllVehiclesRequest()  {
+        dealership.getAllVehicles().forEach(System.out::println);
 
     }
-    private static void processGetAllVehiclesRequest(){
-        
+    private void processAddVehicleRequest(){
+        System.out.println("-Please enter Information to add a Car to the System-");
+        System.out.print("Vin Number: ");
+        int vin = input.nextInt();
+        System.out.print("Year: ");
+        int year = input.nextInt();
+        input.nextLine();
+        System.out.print("Make: ");
+        String make = input.nextLine();
+        System.out.print("Model: ");
+        String model = input.nextLine();
+        System.out.print("Vehicle Type: ");
+        String vehicleType = input.nextLine();
+        System.out.print("Color: ");
+        String color = input.nextLine();
+        System.out.print("Odomoter Reading: ");
+        int odometerReading = input.nextInt();
+        System.out.print("Price: ");
+        double price = input.nextDouble();
+        input.nextLine();
+        dealership.addVehicle(new Vehicle(vin, year, make, model, vehicleType, color, odometerReading, price));
     }
-    private static void processAddVehicleRequest(){
-
-    }
-    private static void processRemoveVehicleRequest(){
+    private void processRemoveVehicleRequest(){
 
     }
 }
